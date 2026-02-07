@@ -9,10 +9,14 @@
 			- vim
 			- netcat
 			- net-tools
+			- nfs-common
+			- cifs-utils
 		packages_redhat:
 			- vim
 			- nmap-ncat
 			- net-tools
+			- nfs-utils
+			- cifs-utils
 
 	tasks:
 		- name: Update apt cache (Debian/Ubuntu)
