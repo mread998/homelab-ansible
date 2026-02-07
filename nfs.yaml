@@ -34,19 +34,19 @@
       when: ansible_pkg_mgr == 'dnf'
       tags: update
 
-    - name: Update pacman packages (Arch/Manjaro)
-      pacman:
-        update_cache: yes
-        upgrade: yes
-      when: ansible_pkg_mgr == 'pacman'
-      tags: update
+    # - name: Update pacman packages (Arch/Manjaro)
+    #   pacman:
+    #     update_cache: yes
+    #     upgrade: yes
+    #   when: ansible_pkg_mgr == 'pacman'
+    #   tags: update
 
-    - name: Update zypper packages (openSUSE)
-      zypper:
-        name: '*'
-        state: latest
-      when: ansible_pkg_mgr == 'zypper'
-      tags: update
+    # - name: Update zypper packages (openSUSE)
+    #   zypper:
+    #     name: '*'
+    #     state: latest
+    #   when: ansible_pkg_mgr == 'zypper'
+    #   tags: update
 
     - name: Install NFS Server (Debian/Ubuntu)
       apt:
@@ -65,22 +65,22 @@
       when: ansible_pkg_mgr in ['yum', 'dnf']
       tags: nfs
 
-    - name: Install NFS Server (Arch/Manjaro)
-      pacman:
-        name:
-          - nfs-utils
-        state: present
-      when: ansible_pkg_mgr == 'pacman'
-      tags: nfs
+    # - name: Install NFS Server (Arch/Manjaro)
+    #   pacman:
+    #     name:
+    #       - nfs-utils
+    #     state: present
+    #   when: ansible_pkg_mgr == 'pacman'
+    #   tags: nfs
 
-    - name: Install NFS Server (openSUSE)
-      zypper:
-        name:
-          - nfs-kernel-server
-          - nfs-utils
-        state: present
-      when: ansible_pkg_mgr == 'zypper'
-      tags: nfs
+    # - name: Install NFS Server (openSUSE)
+    #   zypper:
+    #     name:
+    #       - nfs-kernel-server
+    #       - nfs-utils
+    #     state: present
+    #   when: ansible_pkg_mgr == 'zypper'
+    #   tags: nfs
 
     - name: Create NFS export directory if it doesn't exist
       file:
@@ -123,29 +123,29 @@
       when: ansible_pkg_mgr in ['yum', 'dnf']
       tags: nfs
 
-    - name: Enable and start NFS server (Arch)
-      systemd:
-        name: "{{ item }}"
-        enabled: yes
-        state: started
-        daemon_reload: yes
-      loop:
-        - nfs-server.service
-        - rpc-mountd.service
-        - rpcbind.service
-      when: ansible_pkg_mgr == 'pacman'
-      tags: nfs
+    # - name: Enable and start NFS server (Arch)
+    #   systemd:
+    #     name: "{{ item }}"
+    #     enabled: yes
+    #     state: started
+    #     daemon_reload: yes
+    #   loop:
+    #     - nfs-server.service
+    #     - rpc-mountd.service
+    #     - rpcbind.service
+    #   when: ansible_pkg_mgr == 'pacman'
+    #   tags: nfs
 
-    - name: Enable and start NFS server (openSUSE)
-      service:
-        name: "{{ item }}"
-        enabled: yes
-        state: started
-      loop:
-        - nfs-server
-        - rpcbind
-      when: ansible_pkg_mgr == 'zypper'
-      tags: nfs
+    # - name: Enable and start NFS server (openSUSE)
+    #   service:
+    #     name: "{{ item }}"
+    #     enabled: yes
+    #     state: started
+    #   loop:
+    #     - nfs-server
+    #     - rpcbind
+    #   when: ansible_pkg_mgr == 'zypper'
+    #   tags: nfs
 
     - name: Display NFS configuration status
       debug:
