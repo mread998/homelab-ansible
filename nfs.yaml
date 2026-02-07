@@ -6,22 +6,22 @@
   vars:
     # NFS export configuration (customize as needed)
     nfs_exports:
-      - path: "^/mnt/data/movies"
+      - path: "/mnt/data/movies"
         clients: "10.11.11.*"
         options: "rw,sync,no_subtree_check"
-      - path: "^/mnt/data/tv"
+      - path: "/mnt/data/tv"
         clients: "10.11.11.*"
         options: "rw,sync,no_subtree_check"
-      - path: "^/mnt/data/music"
+      - path: "/mnt/data/music"
         clients: "10.11.11.*"
         options: "rw,sync,no_subtree_check"
-      - path: "^/mnt/data/dirt"
+      - path: "/mnt/data/dirt"
         clients: "10.11.11.*"
         options: "rw,sync,no_subtree_check"
-      - path: "^/mnt/data/learn"
+      - path: "/mnt/data/learn"
         clients: "10.11.11.*"
         options: "rw,sync,no_subtree_check"
-      - path: "^/mnt/data/misc"
+      - path: "/mnt/data/misc"
         clients: "10.11.11.*"
         options: "rw,sync,no_subtree_check"
 
