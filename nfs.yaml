@@ -49,20 +49,6 @@
       when: ansible_pkg_mgr == 'dnf'
       tags: update
 
-    # - name: Update pacman packages (Arch/Manjaro)
-    #   pacman:
-    #     update_cache: yes
-    #     upgrade: yes
-    #   when: ansible_pkg_mgr == 'pacman'
-    #   tags: update
-
-    # - name: Update zypper packages (openSUSE)
-    #   zypper:
-    #     name: '*'
-    #     state: latest
-    #   when: ansible_pkg_mgr == 'zypper'
-    #   tags: update
-
     - name: Install NFS Server (Debian/Ubuntu)
       apt:
         name:
@@ -80,23 +66,6 @@
       when: ansible_pkg_mgr in ['yum', 'dnf']
       tags: nfs
 
-    # - name: Install NFS Server (Arch/Manjaro)
-    #   pacman:
-    #     name:
-    #       - nfs-utils
-    #     state: present
-    #   when: ansible_pkg_mgr == 'pacman'
-    #   tags: nfs
-
-    # - name: Install NFS Server (openSUSE)
-    #   zypper:
-    #     name:
-    #       - nfs-kernel-server
-    #       - nfs-utils
-    #     state: present
-    #   when: ansible_pkg_mgr == 'zypper'
-    #   tags: nfs
-
     - name: Create NFS export directory if it doesn't exist
       file:
         path: "{{ item.path }}"
@@ -104,6 +73,17 @@
         mode: '0755'
       loop: "{{ nfs_exports }}"
       tags: nfs
+
+    - name: Create NFS export directories
+      file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+        recurse: yes
+      loop: "{{ nfs_exports }}"
+
 
     - name: Configure NFS exports
       lineinfile:
