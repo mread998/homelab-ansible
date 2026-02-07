@@ -28,33 +28,33 @@
       when: ansible_pkg_mgr == 'dnf'
       tags: update
 
-    - name: Update pacman packages (Arch/Manjaro)
-      pacman:
-        update_cache: yes
-        upgrade: yes
-      when: ansible_pkg_mgr == 'pacman'
-      tags: update
+    # - name: Update pacman packages (Arch/Manjaro)
+    #   pacman:
+    #     update_cache: yes
+    #     upgrade: yes
+    #   when: ansible_pkg_mgr == 'pacman'
+    #   tags: update
 
-    - name: Update zypper packages (openSUSE)
-      zypper:
-        name: '*'
-        state: latest
-      when: ansible_pkg_mgr == 'zypper'
-      tags: update
+    # - name: Update zypper packages (openSUSE)
+    #   zypper:
+    #     name: '*'
+    #     state: latest
+    #   when: ansible_pkg_mgr == 'zypper'
+    #   tags: update
 
-    - name: Update apk packages (Alpine)
-      apk:
-        update_cache: yes
-        upgrade: yes
-      when: ansible_pkg_mgr == 'apk'
-      tags: update
+    # - name: Update apk packages (Alpine)
+    #   apk:
+    #     update_cache: yes
+    #     upgrade: yes
+    #   when: ansible_pkg_mgr == 'apk'
+    #   tags: update
 
-    - name: Update pkg packages (FreeBSD)
-      pkgng:
-        name: '*'
-        state: latest
-      when: ansible_pkg_mgr == 'pkg'
-      tags: update
+    # - name: Update pkg packages (FreeBSD)
+    #   pkgng:
+    #     name: '*'
+    #     state: latest
+    #   when: ansible_pkg_mgr == 'pkg'
+    #   tags: update
 
     - name: Display package manager used
       debug:
