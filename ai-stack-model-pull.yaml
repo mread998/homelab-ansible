@@ -1,6 +1,6 @@
 ---
 - name: Pull an Ollama model inside the ollama Docker container
-  hosts: ollama_hosts
+  hosts: all
   become: true
   gather_facts: false
 
