@@ -63,7 +63,7 @@
               ports:
                 - "8188:8188"
               volumes:
-                - /opt/ai-stack/comfyui:/workspace
+                - /opt/ai-stack/comfyui:/comfy/mnt
               runtime: nvidia
 
     - name: Bring up AI stack with docker compose
