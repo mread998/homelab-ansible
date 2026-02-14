@@ -68,7 +68,7 @@
                 - /opt/ai-stack/comfyui/output:/app/ComfyUI/output
                 - /opt/ai-stack/comfyui/settings:/app/ComfyUI/user/default:rw
                 - /opt/ai-stack/comfyui/flows:/app/ComfyUI/user/default/workflows:rw
-      runtime: nvidia
+              runtime: nvidia
 
     - name: Bring up AI stack with docker compose
       ansible.builtin.command: docker compose up -d
