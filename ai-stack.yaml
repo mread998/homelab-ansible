@@ -55,15 +55,16 @@
               volumes:
                 - /opt/ai-stack/openwebui:/app/backend/data
 
-            # comfyui:
-            #   image: ghcr.io/comfyanonymous/comfyui:latest
-            #   container_name: comfyui
-            #   restart: unless-stopped
-            #   ports:
-            #     - "8188:8188"
-            #   volumes:
-            #     - /opt/ai-stack/comfyui:/workspace
-            #   runtime: nvidia
+            comfyui:
+              image: mmartial/comfyui-nvidia-docker:latest 
+              #ghcr.io/comfyanonymous/comfyui:latest
+              container_name: comfyui
+              restart: unless-stopped
+              ports:
+                - "8188:8188"
+              volumes:
+                - /opt/ai-stack/comfyui:/workspace
+              runtime: nvidia
 
     - name: Bring up AI stack with docker compose
       ansible.builtin.command: docker compose up -d
