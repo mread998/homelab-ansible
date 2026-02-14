@@ -1,0 +1,37 @@
+---
+- name: Install recommended Ubuntu drivers and reboot
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install ubuntu-drivers-common
+      ansible.builtin.apt:
+        name: ubuntu-drivers-common
+        state: present
+
+    - name: Show available drivers
+      ansible.builtin.command: ubuntu-drivers devices
+      register: driver_info
+      changed_when: false
+
+    - name: Display detected drivers
+      ansible.builtin.debug:
+        var: driver_info.stdout_lines
+
+    - name: Auto install recommended drivers
+      ansible.builtin.command: ubuntu-drivers autoinstall
+      register: driver_install
+      changed_when: "'No drivers found' not in driver_install.stdout"
+
+    - name: Reboot system if drivers were installed
+      ansible.builtin.reboot:
+        reboot_timeout: 900
+        msg: "Reboot initiated by AWX after ubuntu-drivers autoinstall"
+      when: driver_install is changed
