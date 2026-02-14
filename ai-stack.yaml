@@ -1,0 +1,74 @@
+---
+- name: Create AI stack directories and docker-compose file
+  hosts: all
+  become: true
+
+  vars:
+    ai_base_path: /opt/ai-stack
+    ai_directories:
+      - ollama
+      - openwebui
+      - comfyui
+
+    ai_compose_file: "{{ ai_base_path }}/docker-compose.yml"
+
+  tasks:
+    - name: Create base directory
+      ansible.builtin.file:
+        path: "{{ ai_base_path }}"
+        state: directory
+        mode: "0755"
+
+    - name: Create AI service directories
+      ansible.builtin.file:
+        path: "{{ ai_base_path }}/{{ item }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ ai_directories }}"
+
+    - name: Write docker-compose.yml for AI stack
+      ansible.builtin.copy:
+        dest: "{{ ai_compose_file }}"
+        mode: "0644"
+        content: |
+          services:
+            ollama:
+              image: ollama/ollama:latest
+              container_name: ollama
+              restart: unless-stopped
+              ports:
+                - "11434:11434"
+              volumes:
+                - /opt/ai-stack/ollama:/root/.ollama
+              runtime: nvidia
+
+            openwebui:
+              image: ghcr.io/open-webui/open-webui:latest
+              container_name: openwebui
+              restart: unless-stopped
+              depends_on:
+                - ollama
+              ports:
+                - "3000:8080"
+              environment:
+                - OLLAMA_BASE_URL=http://ollama:11434
+              volumes:
+                - /opt/ai-stack/openwebui:/app/backend/data
+
+            comfyui:
+              image: ghcr.io/comfyanonymous/comfyui:latest
+              container_name: comfyui
+              restart: unless-stopped
+              ports:
+                - "8188:8188"
+              volumes:
+                - /opt/ai-stack/comfyui:/workspace
+              runtime: nvidia
+
+    - name: Bring up AI stack with docker compose
+      ansible.builtin.command: docker compose up -d
+      args:
+        chdir: "{{ ai_base_path }}"
+      register: compose_up
+      changed_when: "'Started' in compose_up.stdout or 'Recreated' in compose_up.stdout or 'Created' in compose_up.stdout"
+      failed_when: compose_up.rc != 0
