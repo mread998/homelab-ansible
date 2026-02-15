@@ -48,7 +48,7 @@
                 - "11434:11434"
               volumes:
                 - /opt/ai-stack/ollama:/root/.ollama
-              runtime: nvidia
+              gpus: all
 
             openwebui:
               image: ghcr.io/open-webui/open-webui:latest
@@ -69,13 +69,13 @@
               ports:
                 - "8000:8000"
               volumes:
-                - /opt/ai-stack/sillytavern:/home/node/app/config:rw
-                - /opt/ai-stack/sillytavern:/home/node/app/data:rw
-                - /opt/ai-stack/sillytavern/sillytavern-extensions:/home/node/app/public/scripts/extensions/third-party:rw
-                - /opt/ai-stack/sillytavern/sillytavern-plugins:/home/node/app/plugins:rw
+                - /opt/ai-stack/sillytavern/config:/home/node/app/config
+                - /opt/ai-stack/sillytavern/data:/home/node/app/data
+                - /opt/ai-stack/sillytavern/sillytavern-extensions:/home/node/app/public/scripts/extensions/third-party
+                - /opt/ai-stack/sillytavern/sillytavern-plugins:/home/node/app/plugins
 
             comfyui:
-              image: yanwk/comfyui-boot:cu128-slim
+              image: yanwk/comfyui-boot:cu130-slim
               container_name: comfyui
               ports:
                 - "8188:8188"
@@ -86,7 +86,11 @@
                 - /opt/ai-stack/comfyui/input:/root/ComfyUI/input
                 - /opt/ai-stack/comfyui/output:/root/ComfyUI/output
                 - /opt/ai-stack/comfyui/workflows:/root/ComfyUI/user/default/workflows
-              runtime: nvidia
+              environment:
+                - NVIDIA_VISIBLE_DEVICES=all
+                - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+                - CLI_ARGS="--disable-xformers"
+              gpus: all
 
 
 
