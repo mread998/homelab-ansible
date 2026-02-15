@@ -8,6 +8,10 @@
     ai_directories:
       - ollama
       - openwebui
+      - comfyui/models
+      - comfyui/output
+      - comfyui/settings
+      - comfyui/flows
       - sillytavern
       - sillytavern/sillytavern-extensions
       - sillytavern/sillytavern-plugins
@@ -68,7 +72,21 @@
                 - /opt/ai-stack/sillytavern/sillytavern-extensions:/home/node/app/public/scripts/extensions/third-party:rw
                 - /opt/ai-stack/sillytavern/sillytavern-plugins:/home/node/app/plugins:rw
 
-            
+            comfyui:
+              image: comfyui:latest
+              container_name: comfyui
+              ports:
+                - "8188:8188"
+              volumes:
+                - /opt/ai-stack/comfyui/models:/app/ComfyUI/models
+                - /opt/ai-stack/comfyui/output:/app/ComfyUI/output
+                - /opt/ai-stack/comfyui/settings:/app/ComfyUI/user/default:rw
+                - /opt/ai-stack/comfyui/flows:/app/ComfyUI/user/default/workflows:rw
+              runtime: nvidia
+
+
+
+
     - name: Bring up AI stack with docker compose
       ansible.builtin.command: docker compose up -d
       args:
