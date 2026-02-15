@@ -55,6 +55,18 @@
               volumes:
                 - /opt/ai-stack/openwebui:/app/backend/data
 
+            sillytavern:
+              container_name: sillytavern
+              image: ghcr.io/sillytavern/sillytavern:latest
+              ports:
+                - "8000:8000"
+              volumes:
+                - /opt/ai-stack/sillytavern:/home/node/app/config:rw
+                - /opt/ai-stack/sillytavern:/home/node/app/data:rw
+                - /opt/ai-stack/sillytavern/sillytavern-extensions:/home/node/app/public/scripts/extensions/third-party:rw
+                - /opt/ai-stack/sillytavern/sillytavern-plugins:/home/node/app/plugins:rw
+
+
             # comfyui:
             #   image: comfyui:latest
             #   container_name: comfyui
