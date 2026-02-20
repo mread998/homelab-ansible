@@ -6,7 +6,7 @@
   vars:
     disk_device: /dev/sdb          # whole disk (NOT /dev/sdb1)
     part_number: 1
-    mount_point: /data
+    mount_point: /opt/ai-stack
     filesystem_type: ext4
     part_label: data
     mount_opts: defaults
