@@ -1,0 +1,47 @@
+---
+- name: Format and Mount Disk as ext4
+  hosts: all
+  become: true
+  vars:
+    disk_device: /dev/sdb
+    partition_number: 1
+    mount_point: /opt/ai-stack
+    filesystem_type: ext4
+
+  tasks:
+
+    - name: Install required packages
+      apt:
+        name:
+          - parted
+          - e2fsprogs
+        state: present
+        update_cache: yes
+
+    - name: Create a new partition
+      parted:
+        device: "{{ disk_device }}"
+        number: "{{ partition_number }}"
+        state: present
+        part_type: primary
+        fs_type: "{{ filesystem_type }}"
+        resize: yes
+
+    - name: Create filesystem on partition
+      filesystem:
+        fstype: "{{ filesystem_type }}"
+        dev: "{{ disk_device }}{{ partition_number }}"
+
+    - name: Create mount point directory
+      file:
+        path: "{{ mount_point }}"
+        state: directory
+        mode: '0755'
+
+    - name: Mount filesystem
+      mount:
+        path: "{{ mount_point }}"
+        src: "{{ disk_device }}{{ partition_number }}"
+        fstype: "{{ filesystem_type }}"
+        opts: defaults
+        state: mounted
